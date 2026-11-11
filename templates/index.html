@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="d-flex flex-wrap align-items-center gap-4 gap-md-5 py-4">
+  <div class="sphere" style="--p: {{ overall }}">{{ overall }}%</div>
+  <div class="flex-grow-1" style="max-width: 34rem">
+    <h1 class="display-5">
+      {% if pending %}You have {{ pending }} task{{ 's' if pending != 1 }} to finish{% if overdue %}, {{ overdue }} overdue{% endif %}.
+      {% else %}Every task is done.{% endif %}
+    </h1>
+    <p class="fs-5">
+      You have covered {{ overall }}% of your topics.
+      {% if last %}Your last quiz score was {{ last.score }} out of {{ last.total }}.{% else %}You have not taken a quiz yet.{% endif %}
+    </p>
+    <a class="btn-ink" href="{{ url_for('tasks_page') }}">Open tasks</a>
+    <a class="btn-ink alt" href="{{ url_for('quiz_page') }}">Take a quiz</a>
+  </div>
+</section>
+<section class="sheet mt-3">
+  <h2 class="h4 mb-3">Subjects</h2>
+  {% for s in subjects %}
+  <div class="rule d-flex align-items-center gap-3 py-2">
+    <span class="fw-bold" style="min-width: 8rem">{{ s.name }}</span>
+    <div class="bar flex-grow-1"><i style="width: {{ s.percent }}%"></i></div>
+    <span>{{ s.percent }}%</span>
+  </div>
+  {% else %}
+  <p class="mb-0">No subjects yet. <a href="{{ url_for('progress_page') }}">Add your first subject.</a></p>
+  {% endfor %}
+</section>
+{% endblock %}

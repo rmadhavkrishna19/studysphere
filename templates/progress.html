@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Progress - StudySphere{% endblock %}
+{% block content %}
+<h1 class="mb-4">Subjects and progress</h1>
+<form method="post" action="{{ url_for('subject_add') }}" class="sheet d-flex gap-2 mb-4">
+  <input name="name" class="form-control" placeholder="New subject, e.g. Biology" maxlength="50" required>
+  <button class="btn-ink">Add subject</button>
+</form>
+<div class="row g-4">
+  {% for s in subjects %}
+  <div class="col-lg-6">
+    <section class="sheet h-100">
+      <div class="d-flex align-items-center gap-3 mb-3">
+        <div class="sphere" style="--p: {{ s.percent }}; --s: 4.5rem; font-size: 1.1rem">{{ s.percent }}%</div>
+        <h2 class="h4 m-0">{{ s.name }}</h2>
+      </div>
+      {% for t in s.topics %}
+      <form method="post" action="{{ url_for('topic_toggle', topic_id=t.id) }}" class="rule">
+        <button class="topic {{ 'done' if t.done }}"><span class="box">{{ '✓' if t.done }}</span><span class="{{ 'hl' if t.done }}">{{ t.title }}</span></button>
+      </form>
+      {% endfor %}
+      <form method="post" action="{{ url_for('topic_add') }}" class="d-flex gap-2 mt-3">
+        <input type="hidden" name="subject_id" value="{{ s.id }}">
+        <input name="title" class="form-control" placeholder="Add a topic" maxlength="100" required>
+        <button class="btn-ink">Add</button>
+      </form>
+    </section>
+  </div>
+  {% else %}
+  <p>No subjects yet. Add one above to start tracking topics.</p>
+  {% endfor %}
+</div>
+{% endblock %}
