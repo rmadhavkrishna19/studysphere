@@ -1,0 +1,22 @@
+CREATE TABLE tasks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    due_date TEXT NOT NULL,              -- stored as YYYY-MM-DD
+    done INTEGER NOT NULL DEFAULT 0      -- 0 = pending, 1 = done
+);
+CREATE TABLE subjects (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL UNIQUE
+);
+CREATE TABLE topics (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    subject_id INTEGER NOT NULL REFERENCES subjects(id) ON DELETE CASCADE,
+    title TEXT NOT NULL,
+    done INTEGER NOT NULL DEFAULT 0
+);
+CREATE TABLE quiz_results (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    score INTEGER NOT NULL,
+    total INTEGER NOT NULL,
+    taken_at TEXT NOT NULL
+);
