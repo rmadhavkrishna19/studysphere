@@ -1,6 +1,6 @@
 from datetime import date
 import pytest
-from logic.planner import make_plan
+from logic.planner import make_plan, plan_for_subject
 TOPICS = ["A", "B", "C", "D"]
 def test_even_split():
     plan = make_plan(TOPICS, date(2026, 11, 20), date(2026, 11, 22))
