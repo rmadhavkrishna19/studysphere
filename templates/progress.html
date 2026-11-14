@@ -24,6 +24,10 @@
         <input name="title" class="form-control" placeholder="Add a topic" maxlength="100" required>
         <button class="btn-ink">Add</button>
       </form>
+	<form method="get" action="{{ url_for('plan_page', subject_id=s.id) }}" class="d-flex gap-2 mt-3">
+        <input name="exam" type="date" class="form-control" required>
+        <button class="btn-ink alt">Plan until exam</button>
+      </form>
     </section>
   </div>
   {% else %}
