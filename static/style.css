@@ -1,0 +1,45 @@
+:root { --ink: #1b2a6b; --hl: #ffe45c; --pink: #ff9ebb; --grid: #cfdbea; }
+
+/* Graph-paper page; highlighter yellow always means "studied / done" */
+body {
+  color: var(--ink);
+  font-family: 'Atkinson Hyperlegible', sans-serif;
+  background-color: #eaf0f7;
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px),
+                    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+h1, h2, .brand, .sphere { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; letter-spacing: -.02em; }
+a { color: var(--ink); }
+.brand { display: flex; align-items: center; gap: .5rem; font-size: 1.5rem; text-decoration: none; }
+.tab { padding: .2rem .8rem; font-weight: 700; text-decoration: none; }
+.hl, .tab.on { background: linear-gradient(transparent 15%, var(--hl) 15% 90%, transparent 90%); }
+
+/* The sphere: a pie that fills with highlighter as progress grows */
+.sphere {
+  --p: 0; --s: 10rem; width: var(--s); height: var(--s); flex: none;
+  display: grid; place-items: center; font-size: 2.6rem;
+  border: 3px solid var(--ink); border-radius: 50%;
+  background: conic-gradient(var(--hl) calc(var(--p) * 1%), #fff 0);
+}
+
+.sheet { background: #fff; border: 2px solid var(--ink); border-radius: 4px; padding: 1.25rem; box-shadow: 4px 4px 0 rgba(27, 42, 107, .25); }
+.rule { border-bottom: 1px solid var(--grid); }
+.bar { height: 12px; border: 2px solid var(--ink); border-radius: 99px; overflow: hidden; background: #fff; }
+.bar i { display: block; height: 100%; background: var(--hl); }
+
+.btn-ink { display: inline-block; background: var(--ink); color: #fff; border: 2px solid var(--ink); border-radius: 99px; padding: .4rem 1.2rem; font-weight: 700; text-decoration: none; }
+.btn-ink:hover { background: var(--hl); color: var(--ink); }
+.btn-ink.alt { background: #fff; color: var(--ink); }
+.del { background: none; border: 0; color: var(--ink); text-decoration: underline; opacity: .65; }
+
+.box { width: 26px; height: 26px; flex: none; padding: 0; display: inline-grid; place-items: center; font-weight: 800; color: var(--ink); background: #fff; border: 2px solid var(--ink); border-radius: 5px; }
+.done .box { background: var(--hl); }
+.topic { display: flex; align-items: center; gap: .75rem; width: 100%; padding: .5rem 0; background: none; border: 0; text-align: left; color: var(--ink); }
+.late { background: var(--pink); padding: 0 .35rem; border-radius: 3px; }
+
+.form-control { border: 2px solid var(--ink); border-radius: 8px; }
+.form-control:focus { border-color: var(--ink); box-shadow: 0 0 0 3px var(--hl); }
+.form-check-input:checked { background-color: var(--ink); border-color: var(--ink); }
+.alert { border: 2px solid var(--ink); border-radius: 4px; }
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }

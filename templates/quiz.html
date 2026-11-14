@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Quiz - StudySphere{% endblock %}
+{% block content %}
+<h1 class="mb-4">Quiz corner</h1>
+{% if result %}
+<div class="sheet d-flex align-items-center flex-wrap gap-4">
+  <div class="sphere" style="--p: {{ (100 * result[0] / result[1]) | int if result[1] else 0 }}">{{ result[0] }}/{{ result[1] }}</div>
+  <div>
+    <h2 class="h3">You scored {{ result[0] }} out of {{ result[1] }}.</h2>
+    <a class="btn-ink" href="{{ url_for('quiz_page') }}">Retake quiz</a>
+  </div>
+</div>
+{% elif questions %}
+<form method="post">
+  {% for q in questions %}
+  <fieldset class="sheet mb-4">
+    <legend class="h5">{{ loop.index }}. {{ q.question }}</legend>
+    {% for option in q.options %}
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="{{ q.id }}" value="{{ loop.index0 }}" id="q{{ q.id }}-{{ loop.index0 }}">
+      <label class="form-check-label" for="q{{ q.id }}-{{ loop.index0 }}">{{ option }}</label>
+    </div>
+    {% endfor %}
+  </fieldset>
+  {% endfor %}
+  <button class="btn-ink">Submit answers</button>
+</form>
+{% else %}
+<p>No quiz questions available. Check that data/quiz_data.csv exists and is filled in correctly.</p>
+{% endif %}
+{% endblock %}

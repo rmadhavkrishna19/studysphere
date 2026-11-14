@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Tasks - StudySphere{% endblock %}
+{% block content %}
+<h1 class="mb-4">Tasks and deadlines</h1>
+<form method="post" class="sheet d-flex flex-wrap gap-2 mb-4">
+  <input name="title" class="form-control w-auto flex-grow-1" placeholder="Task, e.g. Finish chemistry record" maxlength="100" required>
+  <input name="due_date" type="date" class="form-control w-auto" required>
+  <button class="btn-ink">Add task</button>
+</form>
+<section class="sheet">
+  {% for t in tasks %}
+  <div class="rule d-flex align-items-center gap-3 py-2 {{ 'done' if t.done }}">
+    <form method="post" action="{{ url_for('task_toggle', task_id=t.id) }}">
+      <button class="box" aria-label="Mark done or pending">{{ '✓' if t.done }}</button>
+    </form>
+    <div class="flex-grow-1">
+      <span class="{{ 'hl' if t.done }}">{{ t.title }}</span><br>
+      <small>Due {{ t.due_date }}{% if t.overdue %} <b class="late">overdue</b>{% endif %}</small>
+    </div>
+    <form method="post" action="{{ url_for('task_delete', task_id=t.id) }}"><button class="del">Delete</button></form>
+  </div>
+  {% else %}
+  <p class="mb-0">No tasks yet. Add the first one above.</p>
+  {% endfor %}
+</section>
+{% endblock %}

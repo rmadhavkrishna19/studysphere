@@ -1,0 +1,4 @@
+question,a,b,c,d,answer
+Which command creates a new Git branch and switches to it?,git branch -d,git checkout -b,git merge,git clone,B
+What does a pull request ask your teammates to do?,Delete the repository,Review changes before merging,Install Python,Restart the server,B
+Which Python keyword defines a function?,func,define,def,fun,C
