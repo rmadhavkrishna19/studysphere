@@ -142,19 +142,31 @@ def plan_page(subject_id):
         flash(str(error), "danger")
     return render_template("plan.html", subject=subject, plan=plan)
 
-
 @app.route("/quiz", methods=["GET", "POST"])
 def quiz_page():
-    questions, result = [], None
     try:
         questions = quiz.load_questions(QUIZ_PATH)
     except ValueError as error:
         flash(str(error), "danger")
-    if request.method == "POST" and questions:
-        result = quiz.score_quiz(questions, request.form)
+        return render_template("quiz.html")
+    if request.method == "POST":  # the student submitted answers
+        subject, name = request.form.get("subject"), request.form.get("quiz")
+        taken = quiz.get_quiz(questions, subject, name)
+        if not taken:
+            flash("That quiz was not found.", "danger")
+            return redirect(url_for("quiz_page"))
+        result = quiz.score_quiz(taken, request.form)
         quiz.save_result(get_db(), *result)
-    return render_template("quiz.html", questions=questions, result=result)
-
+        return render_template("quiz.html", result=result, subject=subject, quiz_name=name)
+    subject = request.args.get("subject")
+    if subject:  # the student picked a subject: give a random quiz with shuffled questions
+        try:
+            name, picked = quiz.pick_random_quiz(questions, subject)
+        except ValueError as error:
+            flash(str(error), "danger")
+            return redirect(url_for("quiz_page"))
+        return render_template("quiz.html", subject=subject, quiz_name=name, questions=picked)
+    return render_template("quiz.html", subjects=quiz.list_subjects(questions))
 
 if __name__ == "__main__":
     app.run(debug=True)  # debug mode is for local use only

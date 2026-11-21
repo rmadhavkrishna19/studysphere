@@ -1,4 +1,13 @@
-question,a,b,c,d,answer
-Which command creates a new Git branch and switches to it?,git branch -d,git checkout -b,git merge,git clone,B
-What does a pull request ask your teammates to do?,Delete the repository,Review changes before merging,Install Python,Restart the server,B
-Which Python keyword defines a function?,func,define,def,fun,C
+subject,quiz,question,a,b,c,d,answer
+Python,Set 1,Which keyword defines a function?,func,define,def,fun,C
+Python,Set 1,Which symbol starts a comment?,#,//,--,/*,A
+Python,Set 2,What does len return for a list of three items?,2,3,4,Error,B
+Python,Set 2,Which built-in converts a string of digits to an integer?,str,int,list,len,B
+Git,Set 1,Which command creates a new branch and switches to it?,git branch -d,git checkout -b,git merge,git clone,B
+Git,Set 1,Which command copies a remote repository to your computer?,git push,git add,git clone,git status,C
+Git,Set 2,What does a pull request ask teammates to do?,Review changes before merging,Delete the repository,Install Python,Restart the server,A
+Git,Set 2,Which command saves staged changes to the history?,git add,git status,git pull,git commit,D
+Mathematics,Set 1,What is the derivative of x squared?,x,2x,x squared,2,B
+Mathematics,Set 1,What is the limit of 1 over x as x grows without bound?,0,1,Infinity,Undefined,A
+Mathematics,Set 2,What is the derivative of a constant?,The constant,1,0,Undefined,C
+Mathematics,Set 2,What is the integral of 2x apart from the constant?,x,2,x squared,2x squared,C
