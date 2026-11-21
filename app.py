@@ -2,11 +2,8 @@
 import os
 import sqlite3
 from datetime import date, timedelta
-
-from flask import Flask, flash, g, redirect, render_template, request, url_for
-
-from logic import progress, quiz, tasks
-
+from flask import Flask, abort, flash, g, redirect, render_template, request, url_for
+from logic import planner, progress, quiz, tasks
 BASE = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE, "studysphere.db")
 QUIZ_PATH = os.path.join(BASE, "data", "quiz_data.csv")
@@ -120,6 +117,30 @@ def topic_add():
 def topic_toggle(topic_id):
     progress.toggle_topic(get_db(), topic_id)
     return redirect(url_for("progress_page"))
+
+@app.post("/progress/topic/<int:topic_id>/delete")
+def topic_delete(topic_id):
+    progress.delete_topic(get_db(), topic_id)
+    return redirect(url_for("progress_page"))
+
+
+@app.post("/progress/subject/<int:subject_id>/delete")
+def subject_delete(subject_id):
+    progress.delete_subject(get_db(), subject_id)
+    return redirect(url_for("progress_page"))
+
+@app.get("/plan/<int:subject_id>")
+def plan_page(subject_id):
+    subjects = progress.subject_progress(get_db())
+    subject = next((s for s in subjects if s["id"] == subject_id), None)
+    if subject is None:
+        abort(404)
+    plan = []
+    try:
+        plan = planner.plan_for_subject(subject, request.args.get("exam"))
+    except ValueError as error:
+        flash(str(error), "danger")
+    return render_template("plan.html", subject=subject, plan=plan)
 
 
 @app.route("/quiz", methods=["GET", "POST"])

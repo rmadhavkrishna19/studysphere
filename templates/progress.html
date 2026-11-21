@@ -12,17 +12,27 @@
     <section class="sheet h-100">
       <div class="d-flex align-items-center gap-3 mb-3">
         <div class="sphere" style="--p: {{ s.percent }}; --s: 4.5rem; font-size: 1.1rem">{{ s.percent }}%</div>
-        <h2 class="h4 m-0">{{ s.name }}</h2>
+        <h2 class="h4 m-0 flex-grow-1">{{ s.name }}</h2>
+        <form method="post" action="{{ url_for('subject_delete', subject_id=s.id) }}" onsubmit="return confirm('Delete this subject and all its topics?')">
+          <button class="del">Delete subject</button>
+        </form>
       </div>
       {% for t in s.topics %}
-      <form method="post" action="{{ url_for('topic_toggle', topic_id=t.id) }}" class="rule">
-        <button class="topic {{ 'done' if t.done }}"><span class="box">{{ '✓' if t.done }}</span><span class="{{ 'hl' if t.done }}">{{ t.title }}</span></button>
-      </form>
+      <div class="rule d-flex align-items-center gap-3">
+        <form method="post" action="{{ url_for('topic_toggle', topic_id=t.id) }}" class="flex-grow-1">
+          <button class="topic {{ 'done' if t.done }}"><span class="box">{{ '✓' if t.done }}</span><span class="{{ 'hl' if t.done }}">{{ t.title }}</span></button>
+        </form>
+        <form method="post" action="{{ url_for('topic_delete', topic_id=t.id) }}"><button class="del">Delete</button></form>
+      </div>
       {% endfor %}
       <form method="post" action="{{ url_for('topic_add') }}" class="d-flex gap-2 mt-3">
         <input type="hidden" name="subject_id" value="{{ s.id }}">
         <input name="title" class="form-control" placeholder="Add a topic" maxlength="100" required>
         <button class="btn-ink">Add</button>
+      </form>
+      <form method="get" action="{{ url_for('plan_page', subject_id=s.id) }}" class="d-flex gap-2 mt-3">
+        <input name="exam" type="date" class="form-control" required>
+        <button class="btn-ink alt">Plan until exam</button>
       </form>
     </section>
   </div>

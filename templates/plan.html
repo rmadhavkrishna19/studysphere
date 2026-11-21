@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Study plan - StudySphere{% endblock %}
+{% block content %}
+<h1 class="mb-4">Study plan: {{ subject.name }}</h1>
+<section class="sheet">
+  {% for day, topics in plan %}
+  <div class="rule py-2"><b>{{ day.strftime('%a %d %b') }}</b>: {{ topics | join(', ') }}</div>
+  {% else %}
+  <p class="mb-0">Nothing to plan. Either every topic is already done, or the date was not valid.</p>
+  {% endfor %}
+</section>
+<a class="btn-ink alt mt-4" href="{{ url_for('progress_page') }}">Back to progress</a>
+{% endblock %}
