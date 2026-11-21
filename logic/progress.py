@@ -54,3 +54,16 @@ def overall_percent(conn):
     """Completion percentage across all topics of all subjects."""
     done, total = conn.execute("SELECT COALESCE(SUM(done), 0), COUNT(*) FROM topics").fetchone()
     return percent(done, total)
+
+def delete_topic(conn, topic_id):
+    """Remove one topic. An unknown id does nothing."""
+    conn.execute("DELETE FROM topics WHERE id = ?", (topic_id,))
+    conn.commit()
+
+
+def delete_subject(conn, subject_id):
+    """Remove a subject together with all of its topics."""
+    conn.execute("DELETE FROM topics WHERE subject_id = ?", (subject_id,))
+    conn.execute("DELETE FROM subjects WHERE id = ?", (subject_id,))
+    conn.commit()
+
