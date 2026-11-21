@@ -6,12 +6,16 @@
 <div class="sheet d-flex align-items-center flex-wrap gap-4">
   <div class="sphere" style="--p: {{ (100 * result[0] / result[1]) | int if result[1] else 0 }}">{{ result[0] }}/{{ result[1] }}</div>
   <div>
-    <h2 class="h3">You scored {{ result[0] }} out of {{ result[1] }}.</h2>
-    <a class="btn-ink" href="{{ url_for('quiz_page') }}">Retake quiz</a>
+    <h2 class="h3">{{ subject }}, {{ quiz_name }}: you scored {{ result[0] }} out of {{ result[1] }}.</h2>
+    <a class="btn-ink" href="{{ url_for('quiz_page', subject=subject) }}">Another {{ subject }} quiz</a>
+    <a class="btn-ink alt" href="{{ url_for('quiz_page') }}">Choose another subject</a>
   </div>
 </div>
 {% elif questions %}
+<p class="fs-5">{{ subject }}, {{ quiz_name }}. The questions are in a random order each time.</p>
 <form method="post">
+  <input type="hidden" name="subject" value="{{ subject }}">
+  <input type="hidden" name="quiz" value="{{ quiz_name }}">
   {% for q in questions %}
   <fieldset class="sheet mb-4">
     <legend class="h5">{{ loop.index }}. {{ q.question }}</legend>
@@ -25,6 +29,11 @@
   {% endfor %}
   <button class="btn-ink">Submit answers</button>
 </form>
+{% elif subjects %}
+<p class="fs-5 mb-4">Pick a subject. You get one of its quizzes at random, with the questions shuffled.</p>
+<div class="d-flex flex-wrap gap-3">
+  {% for s in subjects %}<a class="btn-ink" href="{{ url_for('quiz_page', subject=s) }}">{{ s }}</a>{% endfor %}
+</div>
 {% else %}
 <p>No quiz questions available. Check that data/quiz_data.csv exists and is filled in correctly.</p>
 {% endif %}
