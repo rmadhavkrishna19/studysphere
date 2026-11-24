@@ -2,8 +2,8 @@
 import os
 import sqlite3
 from datetime import date, timedelta
-from flask import Flask, abort, flash, g, redirect, render_template, request, url_for
-from logic import planner, progress, quiz, tasks
+from flask import Flask, abort, flash, g, jsonify, redirect, render_template, request, url_for
+from logic import garden, planner, progress, quiz, tasks
 BASE = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE, "studysphere.db")
 QUIZ_PATH = os.path.join(BASE, "data", "quiz_data.csv")
@@ -22,21 +22,20 @@ SAMPLE_TASKS = [("Finish maths worksheet", -1), ("Read physics chapter 2", 2),
 
 
 def init_db():
-    """Create tables and sample data, but only if the database file is new."""
-    if os.path.exists(DB_PATH):
-        return
+    """Create any missing tables, and add sample data only if the database file is new."""
+    is_new = not os.path.exists(DB_PATH)
     db = sqlite3.connect(DB_PATH)
     with open(os.path.join(BASE, "schema.sql"), encoding="utf-8") as f:
-        db.executescript(f.read())
-    for subject, topics in SAMPLE_TOPICS.items():
-        subject_id = progress.add_subject(db, subject)
-        for title in topics:
-            progress.add_topic(db, subject_id, title)
-    progress.toggle_topic(db, 1)  # mark one topic as studied so progress is visible
-    for title, days in SAMPLE_TASKS:
-        tasks.add_task(db, title, (date.today() + timedelta(days=days)).isoformat())
+        db.executescript(f.read())  # safe on old databases: it only adds missing tables
+    if is_new:
+        for subject, topics in SAMPLE_TOPICS.items():
+            subject_id = progress.add_subject(db, subject)
+            for title in topics:
+                progress.add_topic(db, subject_id, title)
+        progress.toggle_topic(db, 1)  # mark one topic as studied so progress is visible
+        for title, days in SAMPLE_TASKS:
+            tasks.add_task(db, title, (date.today() + timedelta(days=days)).isoformat())
     db.close()
-
 
 def get_db():
     """One database connection per request."""
@@ -141,6 +140,19 @@ def plan_page(subject_id):
     except ValueError as error:
         flash(str(error), "danger")
     return render_template("plan.html", subject=subject, plan=plan)
+@app.get("/garden")
+def garden_page():
+    return render_template("garden.html", info=garden.summary(get_db()))
+
+
+@app.post("/garden/session")
+def garden_session():
+    """Called by the timer in the browser when a study session is finished."""
+    try:
+        garden.add_session(get_db(), request.form.get("minutes"))
+    except ValueError as error:
+        return jsonify(error=str(error)), 400
+    return jsonify(garden.summary(get_db()))
 
 @app.route("/quiz", methods=["GET", "POST"])
 def quiz_page():
