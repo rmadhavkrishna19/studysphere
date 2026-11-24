@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Garden - StudySphere{% endblock %}
+{% block content %}
+<link href="{{ url_for('static', filename='garden.css') }}" rel="stylesheet">
+<h1 class="mb-4">Study garden</h1>
+<div id="garden" class="row g-4 align-items-center" data-url="{{ url_for('garden_session') }}" data-info='{{ info | tojson }}'>
+  <div class="col-md-6">
+    <div class="field">
+      <div id="bubble" class="bubble">Click me!</div>
+      <svg id="pet" class="pet" viewBox="0 0 240 290" role="button" tabindex="0" aria-label="Pet the plant">
+        <defs>
+          <path id="leaf" class="leaf" vector-effect="non-scaling-stroke" d="M0 0 Q-24 -30 -50 -12 Q-30 16 0 0Z"/>
+          <g id="pair"><use href="#leaf"/><use href="#leaf" transform="scale(-1 1)"/></g>
+        </defs>
+        <ellipse cx="120" cy="281" rx="64" ry="6" class="shadow"/>
+        <ellipse cx="120" cy="188" rx="50" ry="8" class="soil"/>
+
+        <g id="sway"><g id="plant">
+          <g class="part" data-from="0" data-to="0"><ellipse class="seed" cx="120" cy="184" rx="10" ry="7"/></g>
+
+          <g class="part" data-from="1" data-to="1">
+            <path class="stem" d="M120 188 L120 168"/>
+            <g transform="translate(120 170) scale(.55)"><use href="#pair"/></g>
+          </g>
+          <g class="part" data-from="2" data-to="2">
+            <path class="stem" d="M120 188 L120 140"/>
+            <g transform="translate(120 164) scale(.8)"><use href="#pair"/></g>
+            <g transform="translate(120 142) scale(.65)"><use href="#pair"/></g>
+          </g>
+          <g class="part" data-from="3" data-to="3">
+            <path class="stem" d="M120 188 L120 112"/>
+            <g transform="translate(120 168) scale(.95)"><use href="#pair"/></g>
+            <g transform="translate(120 142) scale(.85)"><use href="#pair"/></g>
+            <g transform="translate(120 114) scale(.7)"><use href="#pair"/></g>
+          </g>
+
+          <g class="part" data-from="4">
+            <path class="trunk" d="M120 188 L120 120"/>
+            <g class="canopy-edge"><circle cx="120" cy="92" r="36"/><circle cx="88" cy="120" r="28"/><circle cx="152" cy="120" r="28"/><circle cx="120" cy="118" r="30"/></g>
+            <g class="canopy"><circle cx="120" cy="92" r="36"/><circle cx="88" cy="120" r="28"/><circle cx="152" cy="120" r="28"/><circle cx="120" cy="118" r="30"/></g>
+          </g>
+          <g class="part" data-from="5">
+            <circle class="blossom" cx="100" cy="84" r="7"/><circle class="blossom" cx="142" cy="78" r="7"/>
+            <circle class="blossom" cx="120" cy="108" r="7"/><circle class="blossom" cx="84" cy="118" r="7"/>
+            <circle class="blossom" cx="156" cy="122" r="7"/>
+          </g>
+        </g></g>
+
+        <path class="pot" d="M72 210 L168 210 L158 270 Q157 278 148 278 L92 278 Q83 278 82 270 Z"/>
+        <rect class="pot" x="64" y="190" width="112" height="22" rx="8"/>
+        <circle class="eye" cx="103" cy="238" r="4.5"/><circle class="eye" cx="137" cy="238" r="4.5"/>
+        <circle class="cheek" cx="92" cy="250" r="6"/><circle class="cheek" cx="148" cy="250" r="6"/>
+        <path class="mouth smile" d="M111 247 Q120 257 129 247"/>
+        <ellipse class="mouth-open" cx="120" cy="251" rx="5" ry="6"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <section class="sheet">
+      <h2 id="stage-name" class="h3">Seed</h2>
+      <div id="time" class="clock" role="timer">25:00</div>
+      <div class="chips d-flex flex-wrap gap-2 my-3">
+        <button type="button" class="chip" data-min="1">1 min (test)</button>
+        <button type="button" class="chip" data-min="15">15 min</button>
+        <button type="button" class="chip on" data-min="25">25 min</button>
+        <button type="button" class="chip" data-min="45">45 min</button>
+      </div>
+      <div class="d-flex gap-2 mb-4">
+        <button type="button" id="start" class="btn-ink">Start</button>
+        <button type="button" id="reset" class="btn-ink alt">Reset</button>
+      </div>
+      <div class="bar mb-2"><i id="fill" style="width: 0"></i></div>
+      <p id="left" class="mb-3"></p>
+      <p class="mb-0"><b id="today">0</b> min today, <b id="streak">0</b> day streak, <b id="total">0</b> min in total</p>
+    </section>
+  </div>
+</div>
+<script src="{{ url_for('static', filename='garden.js') }}"></script>
+{% endblock %}
