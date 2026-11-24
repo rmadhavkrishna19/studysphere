@@ -12,7 +12,7 @@
 <header class="container py-4 d-flex flex-wrap align-items-center justify-content-between gap-3">
   <a href="{{ url_for('index') }}" class="brand"><i class="sphere" style="--p:62;--s:1.6rem"></i>StudySphere</a>
   <nav class="d-flex gap-1">
-    {% for endpoint, label in [('index', 'Home'), ('tasks_page', 'Tasks'), ('progress_page', 'Progress'), ('quiz_page', 'Quiz')] %}
+    {% for endpoint, label in [('index', 'Home'), ('tasks_page', 'Tasks'), ('progress_page', 'Progress'), ('garden_page', 'Garden'), ('quiz_page', 'Quiz')] %}
     <a href="{{ url_for(endpoint) }}" class="tab {{ 'on' if request.endpoint == endpoint }}">{{ label }}</a>
     {% endfor %}
   </nav>
